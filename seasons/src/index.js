@@ -1,40 +1,39 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import SeasonDisplay from './SeasonDisplay';
+import Spinner from './Spinner';
 
 class App extends React.Component {
-  // Always the first function called when a component is initiialized
-  // Not necessary to call this if we don't need any custom setup.
-  constructor(props) {
-    // Allow parent (React.Component) to do it's constructory things. (First thing in constructor)
-    super(props);
-    
-    // We don't know the latitude at this point so set it to null.
-    // This is the only time we directly manipulate state. Otherwise use setState().
-    this.state = {lat: null, errorMsg: ''};
-    
+
+  state = {lat: null, errorMsg: ''}; // Babel will do the constructor stuff for us.
+
+  componentDidMount() {
     // Get the user's location.
     window.navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this.setState({lat: position.coords.latitude})
-      }, //success callback
-      (err) => {
-        this.setState({errorMsg: err.message})
-      }//failure
+      (position) => this.setState({lat: position.coords.latitude}), //success callback
+      (err) => this.setState({errorMsg: err.message}) //failure
     );
-  };
-
-  // All components require render
-  render() {
+  }
+  
+  // avoid conditionals in render method -- extract to helper method
+  renderContent(){
     if(this.state.errorMsg && !this.state.lat) {
       return <div>Error: {this.state.errorMsg}</div>;
     };
 
     if(!this.state.errorMsg && this.state.lat) {
-      return <div>Latitude: {this.state.lat}</div>;
+      return <SeasonDisplay lat={this.state.lat}/>;
     };
 
-    return <div>Loading...</div>
+    return <Spinner message="Please accept location request!"/>
+  }
+
+  render() {
+    return(
+      <div className="border red">
+        {this.renderContent()}
+      </div>
+    );
   };
 };
 
