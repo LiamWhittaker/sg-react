@@ -6,14 +6,13 @@
       "id": 5
     },
     {
-      "title": "New Stream",
-      "description": "I made this",
-      "userId": "110243252654972889021",
+      "title": "New Stream EDITED",
+      "description": "I made this. And edited this!",
       "id": 6
     },
     {
       "title": "History stream",
-      "description": "testing",
+      "description": "testing PATCH",
       "userId": "110243252654972889021",
       "id": 7
     },
